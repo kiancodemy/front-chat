@@ -1,8 +1,8 @@
 import { toast } from "react-toastify";
 import { Slide } from "react-toastify";
 import { toastType } from "../types/type";
-export const tost = (content: toastType) => {
-  if (content.status === "sucess") {
+export const resultAlert = (content: toastType) => {
+  if (content.status === "success") {
     return toast.success(content.message, {
       position: "top-right",
       autoClose: 2000,

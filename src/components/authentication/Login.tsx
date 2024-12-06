@@ -1,7 +1,12 @@
-import { tost } from "../../utils/toast";
+import { uselogin } from "../../hooks/Login";
 export default function Login() {
-  const sumit = () => {
-    tost({ status: "sucess", message: "fuck" });
+  const { mutate, isPending } = uselogin();
+
+  const submitForm = async () => {
+    mutate({
+      email: "",
+      password: "",
+    });
   };
 
   return (
@@ -19,7 +24,7 @@ export default function Login() {
         <input type="password" className="border-2 rounded-md py-1 px-2" />
       </div>
       <button
-        onClick={sumit}
+        onClick={submitForm}
         className="bg-blue-500 capitalize hover:bg-blue-700 duration-500 text-white rounded-md py-2"
       >
         login
