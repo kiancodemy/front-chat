@@ -1,6 +1,6 @@
 export default function Loading() {
   return (
-    <div className="bg-gray-700 flex justify-center items-center bg-opacity-20 backdrop-blur-md fixed inset-0">
+    <div className="bg-gray-400 flex justify-center items-center bg-opacity-20 backdrop-blur-md absolute inset-0">
       <div>
         <svg
           aria-hidden="true"

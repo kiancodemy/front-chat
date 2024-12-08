@@ -1,18 +1,15 @@
 import { useMutation } from "@tanstack/react-query";
 import { resultAlert } from "../utils/toast";
-import { useUserStore } from "../store/zustand/userstore";
-import { useNavigate } from "react-router";
+import { singupType } from "../types/type";
 
-import { loginType } from "../types/type";
-export const loginfunction = async (data: loginType) => {
+const signupfunction = async (data: singupType) => {
   try {
-    const response = await fetch("http://localhost:5000/user/login", {
+    const response = await fetch("http://localhost:5000/user/signup", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
-      credentials: "include",
     });
 
     if (response.ok) {
@@ -25,20 +22,14 @@ export const loginfunction = async (data: loginType) => {
     throw new Error(error.message);
   }
 };
-
-export const uselogin = () => {
-  const navigate = useNavigate();
-  const { setUser } = useUserStore();
+export const usesignup = () => {
   const { mutate, isPending } = useMutation({
-    mutationFn: loginfunction,
+    mutationFn: signupfunction,
     onError: (error) => {
       resultAlert({ status: "err", message: error.message });
     },
     onSuccess: (data) => {
-      setUser(data);
-
-      resultAlert({ status: "success", message: "login successfully" });
-      navigate("/main/chat");
+      resultAlert({ status: "success", message: data.message });
     },
   });
 
