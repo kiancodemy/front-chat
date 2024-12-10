@@ -1,13 +1,13 @@
-import React from "react";
-import { useUserStore } from "../../store/zustand/userstore";
+import { useUserStore } from "../../../store/zustand/userstore";
 import { useState } from "react";
-import { uselogout } from "../../hooks/logout";
-
+import { uselogout } from "../../../hooks/logout";
+import UserData from "../../models/UserData";
 export default function UserButton() {
   const { mutate, isPending } = uselogout();
+  const { setUserModel, user, userModel } = useUserStore();
 
   const [open, setopen] = useState(false);
-  const { user } = useUserStore();
+
   return (
     <div className="relative">
       <button
@@ -25,11 +25,15 @@ export default function UserButton() {
           >
             logout
           </button>
-          <button className="bg-yellow-400 text-white  py-2 rounded-md">
+          <button
+            onClick={() => setUserModel()}
+            className="bg-yellow-400 text-white  py-2 rounded-md"
+          >
             profile
           </button>
         </div>
       )}
+      <UserData></UserData>
     </div>
   );
 }

@@ -1,28 +1,32 @@
-import { useAllusers } from "../../hooks/Allusers";
+import { useAllchats } from "../../hooks/Allchats";
 import Loading from "../Loading/Loading";
-import { UserMenue } from "../../types/type";
+import ChatItem from "./ChatItem";
 import { useUserStore } from "../../store/zustand/userstore";
-import InputSearch from "./InputSearch";
-import User from "./User";
 export default function Chatmenue() {
-  const { search } = useUserStore();
-  const { isPending, data } = useAllusers(search);
+  const { data, isPending } = useAllchats();
+  const { selectedChat } = useUserStore();
 
   return (
-    <div className="flex border border-gray-400 rounded-md gap-y-5 relative p-2 flex-col basis-1/4">
+    <div
+      className={`relative ${
+        selectedChat ? "hidden md:block" : "basis-full"
+      }  rounded-md bg-white md:basis-1/4`}
+    >
       {isPending ? (
         <Loading></Loading>
       ) : (
-        <div className="flex  flex-col gap-y-2">
-          <div className="flex items-center justify-between px-2">
-            <h1 className="text-xl  font-semibold capitalize">mychats</h1>
-            <button className="bg-red-500 py-2 px-2 rounded-md text-white capitalize">
-              add Group+
+        <div className="gap-y-4 divide-y-2  p-2 flex flex-col">
+          <div className="flex  justify-between items-center">
+            <h1 className="capitalize font-semibold">my chats</h1>
+            <button className="capitalize py-1 md:py-2 px-2 md:px-4 rounded-md duration-500 hover:bg-red-700 bg-red-500 text-white">
+              group chat+
             </button>
           </div>
-          {data?.map((item: UserMenue) => {
-            return <User key={item._id} item={item}></User>;
-          })}
+          <div className="flex flex-col gap-y-2">
+            {data?.map((item: any) => {
+              return <ChatItem chat={item} key={item?._id}></ChatItem>;
+            })}
+          </div>
         </div>
       )}
     </div>

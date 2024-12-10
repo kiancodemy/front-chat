@@ -5,11 +5,11 @@ export default function InputSearch() {
   const { setsearch } = useUserStore();
   const [User, setUser] = useState("");
 
-  useEffect(() => {
+  /*useEffect(() => {
     return () => {
       setsearch("");
     };
-  }, []);
+  }, []);*/
 
   useEffect(() => {
     const timer = setTimeout(() => {

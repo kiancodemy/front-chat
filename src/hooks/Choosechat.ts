@@ -1,11 +1,10 @@
 import { useMutation } from "@tanstack/react-query";
 import { resultAlert } from "../utils/toast";
 import { useUserStore } from "../store/zustand/userstore";
-
-import { loginType } from "../types/type";
-export const loginfunction = async (data: loginType) => {
+import { useQueryClient } from "@tanstack/react-query";
+export const choosechat = async (data: { userid: string }) => {
   try {
-    const response = await fetch("http://localhost:5000/user/login", {
+    const response = await fetch("http://localhost:5000/chats/chatacess", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -25,17 +24,22 @@ export const loginfunction = async (data: loginType) => {
   }
 };
 
-export const uselogin = () => {
+export const useChooseChat = () => {
+  const queryClient = useQueryClient();
   const { setUser } = useUserStore();
   const { mutate, isPending } = useMutation({
-    mutationFn: loginfunction,
+    mutationFn: choosechat,
     onError: (error) => {
-      resultAlert({ status: "err", message: error.message });
+      resultAlert({
+        status: "err",
+        message: error.message || "failed to create",
+      });
     },
     onSuccess: (data) => {
       setUser(data);
+      queryClient.invalidateQueries({ queryKey: ["Allchats"] });
 
-      resultAlert({ status: "success", message: "login successfully" });
+      resultAlert({ status: "success", message: "created suceesfuly" });
     },
   });
 
