@@ -6,6 +6,8 @@ type user = {
   search: string;
   logout: () => void;
   setUser: (data: UserType) => void;
+  groupModel: boolean;
+  setgroupModel: () => void;
   userModel: boolean;
   setUserModel: () => void;
   setsearch: (value: string) => void;
@@ -18,6 +20,9 @@ type user = {
 export const useUserStore = create<user>()(
   persist(
     (set) => ({
+      groupModel: false,
+      setgroupModel: () =>
+        set((state: any) => ({ groupModel: !state.groupModel })),
       user: null,
       selectedChat: null,
       setselectChat: (data) => set(() => ({ selectedChat: data })),

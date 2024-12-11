@@ -11,7 +11,7 @@ export default function SideDrawer() {
         sideDrawer ? "flex" : "hidden"
       } z-[2000] flex justify-start fixed inset-0 bg-gray-600 bg-opacity-55 `}
     >
-      <div className="flex max-w-[320px] flex-col py-4  px-2 bg-white gap-y-4">
+      <div className="animate-slideIn flex max-w-[320px] flex-col py-4  px-2 bg-white gap-y-4">
         <InputSearch></InputSearch>
         <Chatmenue></Chatmenue>
       </div>

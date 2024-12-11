@@ -1,6 +1,8 @@
 import { useUserStore } from "../../store/zustand/userstore";
+
 export default function ChatItem({ chat }: { chat: any }) {
-  const { setselectChat, selectedChat } = useUserStore();
+  const { setselectChat, selectedChat, user } = useUserStore();
+
   return (
     <div
       onClick={() => setselectChat(chat)}
@@ -10,12 +12,16 @@ export default function ChatItem({ chat }: { chat: any }) {
           : "bg-gray-300 "
       } p-2 cursor-pointer  rounded-md flex-col gap-y-1`}
     >
-      <h1 className="capitalize flex gap-x-2 items-center">
-        <span className="font-bold"> chatname:</span>
-        <span> {chat.chatName}</span>
-      </h1>
       <div className="capitalize">
-        {chat.isGroupChat ? <span>groupchat</span> : <span>singlechat</span>}
+        {chat.isGroupChat ? (
+          <span>{chat.chatName}</span>
+        ) : (
+          <span className="flex gap-x-1">
+            {chat?.participants[0]._id === user?._id
+              ? chat?.participants[1].username
+              : chat?.participants[0].username}
+          </span>
+        )}
       </div>
     </div>
   );

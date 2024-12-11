@@ -5,7 +5,6 @@ export default function User({ item }: { item: UserMenue }) {
   const { setsideDrawer } = useUserStore();
   const { mutate } = useChooseChat();
   const handleDrawer = async (item: any) => {
-    console.log({ userid: item._id });
     mutate({ userid: item._id });
     setsideDrawer();
   };

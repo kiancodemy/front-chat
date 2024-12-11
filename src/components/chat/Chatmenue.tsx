@@ -22,7 +22,7 @@ export default function Chatmenue() {
               group chat+
             </button>
           </div>
-          <div className="flex flex-col gap-y-2">
+          <div className="flex overflow-y-auto flex-col gap-y-2">
             {data?.map((item: any) => {
               return <ChatItem chat={item} key={item?._id}></ChatItem>;
             })}

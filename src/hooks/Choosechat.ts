@@ -26,7 +26,7 @@ export const choosechat = async (data: { userid: string }) => {
 
 export const useChooseChat = () => {
   const queryClient = useQueryClient();
-  const { setUser } = useUserStore();
+
   const { mutate, isPending } = useMutation({
     mutationFn: choosechat,
     onError: (error) => {
@@ -35,8 +35,7 @@ export const useChooseChat = () => {
         message: error.message || "failed to create",
       });
     },
-    onSuccess: (data) => {
-      setUser(data);
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["Allchats"] });
 
       resultAlert({ status: "success", message: "created suceesfuly" });
