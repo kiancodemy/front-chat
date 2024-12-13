@@ -8,6 +8,8 @@ type user = {
   setUser: (data: UserType) => void;
   groupModel: boolean;
   setgroupModel: () => void;
+  editGroup: boolean;
+  seteditgroup: () => void;
   userModel: boolean;
   setUserModel: () => void;
   setsearch: (value: string) => void;
@@ -21,6 +23,9 @@ export const useUserStore = create<user>()(
   persist(
     (set) => ({
       groupModel: false,
+      editGroup: false,
+      seteditgroup: () =>
+        set((state: any) => ({ editGroup: !state.editGroup })),
       setgroupModel: () =>
         set((state: any) => ({ groupModel: !state.groupModel })),
       user: null,

@@ -8,7 +8,7 @@ export default function Chatcontainer() {
         <ChatHeader></ChatHeader>
       </div>
 
-      <div className="bg-black *:bg-white grow flex gap-x-3 max-w-[80%] p-4 rounded-md container mx-auto">
+      <div className="bg-black *:bg-white h-[200px] md:h-[300px] grow flex gap-x-3 max-w-[80%] p-4 rounded-md container mx-auto">
         <Chatmenue></Chatmenue>
         <MessageContainer />
       </div>

@@ -2,10 +2,13 @@ import { useUserStore } from "../../store/zustand/userstore";
 import { useEffect, useState } from "react";
 import { TiDeleteOutline } from "react-icons/ti";
 import { resultAlert } from "../../utils/toast";
+import { useNewGroup } from "../../hooks/NewGroup";
 import { useAllusers } from "../../hooks/Allusers";
 export default function CreateGroup() {
+  const { isPending: groupPenfing, mutate } = useNewGroup();
   const { groupModel, setgroupModel } = useUserStore();
-  const [selectMmeber, setselectMmeber] = useState<any>([]);
+  const [selectMember, setselectMember] = useState<any>([]);
+  const [groupName, setgroupName] = useState("");
   const [search, setsearch] = useState("");
   const [item, setitem] = useState("");
   const { data, isPending } = useAllusers(item);
@@ -21,16 +24,33 @@ export default function CreateGroup() {
     };
   }, [search, setitem]);
   const AddMember = (member: any) => {
-    if (selectMmeber.includes(member)) {
+    if (selectMember.includes(member)) {
       resultAlert({ status: "err", message: "it is already exist" });
       return true;
     }
 
-    setselectMmeber([...selectMmeber, member]);
+    setselectMember([...selectMember, member]);
   };
   const handleDelete = (item: any) => {
-    const filter = selectMmeber.filter((items: any) => items._id !== item._id);
-    setselectMmeber(filter);
+    const filter = selectMember.filter((items: any) => items._id !== item._id);
+    setselectMember(filter);
+  };
+  const handleSubmit = () => {
+    if (!groupName) {
+      resultAlert({ status: "err", message: "choose group name" });
+      return;
+    } else if (selectMember.length < 2) {
+      resultAlert({
+        status: "err",
+        message: "you should choose atleast two member",
+      });
+      return;
+    }
+
+    mutate({ name: groupName, users: selectMember });
+    setgroupModel();
+    setsearch("");
+    setselectMember([]);
   };
 
   return (
@@ -38,9 +58,9 @@ export default function CreateGroup() {
       onClick={(e) => e.target === e.currentTarget && setgroupModel()}
       className={`${
         groupModel ? "flex" : "hidden"
-      } fixed inset-0 p-2 bg-gray-600  z-[1000] bg-opacity-80 justify-center items-center`}
+      } fixed inset-0 p-2 bg-gray-600 z-[1000] bg-opacity-50 justify-center items-center`}
     >
-      <div className="flex max-w-[400px] container p-4 bg-white rounded-md  border-2 flex-col gap-y-6">
+      <div className="flex max-w-[330px] md:max-w-[400px] container p-4 bg-white rounded-md  border-2 flex-col gap-y-2 md:gap-y-6">
         <h1 className="capitalize font-semibold text-center text-2xl">
           create group chat
         </h1>
@@ -49,6 +69,7 @@ export default function CreateGroup() {
             <span
               onClick={() => {
                 setgroupModel(), setsearch("");
+                setselectMember([]);
               }}
               className="text-2xl cursor-pointer"
             >
@@ -56,6 +77,8 @@ export default function CreateGroup() {
             </span>
           </div>
           <input
+            value={groupName}
+            onChange={(e: any) => setgroupName(e.target.value)}
             type="text"
             placeholder="set group name"
             className="placeholder:capitalize border p-2 placeholder:text-gray-500"
@@ -70,9 +93,9 @@ export default function CreateGroup() {
             className="placeholder:capitalize border p-2 placeholder:text-gray-500"
           />
         </div>
-        {selectMmeber?.length > 0 && (
+        {selectMember.length > 0 && (
           <div className="flex gap-x-2 flex-wrap">
-            {selectMmeber.map((item: any) => (
+            {selectMember.map((item: any) => (
               <span
                 key={item._id}
                 className="bg-purple-600 py-2 px-6 flex gap-x-2 rounded-full text-white "
@@ -87,7 +110,7 @@ export default function CreateGroup() {
         )}
         {search && !isPending && (
           <div className="max-h-[150px] flex flex-col gap-y-2 overflow-y-auto">
-            {data && data.length === 0 ? (
+            {!isPending && data.length === 0 ? (
               <span className="text-center capitalize">
                 no such user! try again
               </span>
@@ -120,8 +143,10 @@ export default function CreateGroup() {
         </div>
 
         <button
-          onClick={() => setgroupModel()}
-          className="bg-blue-500 hover:bg-blue-700 duration-500 text-white py-2 px-6 rounded-md "
+          type="submit"
+          disabled={isPending || groupPenfing}
+          onClick={handleSubmit}
+          className="bg-blue-500 disabled:bg-gray-500 disabled:text-white hover:bg-blue-700 duration-500 text-white py-2 px-6 rounded-md "
         >
           create
         </button>

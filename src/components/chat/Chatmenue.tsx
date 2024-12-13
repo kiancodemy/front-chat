@@ -1,10 +1,11 @@
 import { useAllchats } from "../../hooks/Allchats";
 import Loading from "../Loading/Loading";
 import ChatItem from "./ChatItem";
+import CreateGroup from "../models/CreateGroup";
 import { useUserStore } from "../../store/zustand/userstore";
 export default function Chatmenue() {
   const { data, isPending } = useAllchats();
-  const { selectedChat } = useUserStore();
+  const { selectedChat, setgroupModel } = useUserStore();
 
   return (
     <div
@@ -18,7 +19,10 @@ export default function Chatmenue() {
         <div className="gap-y-4 divide-y-2  p-2 flex flex-col">
           <div className="flex  justify-between items-center">
             <h1 className="capitalize font-semibold">my chats</h1>
-            <button className="capitalize py-1 md:py-2 px-2 md:px-4 rounded-md duration-500 hover:bg-red-700 bg-red-500 text-white">
+            <button
+              onClick={() => setgroupModel()}
+              className="capitalize py-1 md:py-2 px-2 md:px-4 rounded-md duration-500 hover:bg-red-700 bg-red-500 text-white"
+            >
               group chat+
             </button>
           </div>
@@ -29,6 +33,7 @@ export default function Chatmenue() {
           </div>
         </div>
       )}
+      <CreateGroup></CreateGroup>
     </div>
   );
 }
