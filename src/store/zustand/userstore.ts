@@ -17,11 +17,15 @@ type user = {
   selectedChat: any;
   setselectChat: (data: any) => void;
   sideDrawer: boolean;
+  notificationList: any;
+  setnitification: (data: any) => void;
 };
 
 export const useUserStore = create<user>()(
   persist(
     (set) => ({
+      notificationList: [],
+      setnitification: (data: any) => set(() => ({ notificationList: data })),
       groupModel: false,
       editGroup: false,
       seteditgroup: () =>
@@ -44,7 +48,10 @@ export const useUserStore = create<user>()(
     }),
     {
       name: "user",
-      partialize: (state) => ({ user: state.user }),
+      partialize: (state) => ({
+        user: state.user,
+        notificationList: state.notificationList,
+      }),
     }
   )
 );

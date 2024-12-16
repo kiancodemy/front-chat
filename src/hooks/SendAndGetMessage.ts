@@ -54,7 +54,7 @@ export const sendmessages = async (data: {
 };
 export const useAllmessages = () => {
   const { selectedChat } = useUserStore();
-  const [a, setNewMessage] = useState<any>(null);
+  const [Newdata, setNewMessage] = useState<any>(null);
 
   const { isSuccess, data, isPending } = useQuery({
     queryKey: ["Allmessages", selectedChat?._id],
@@ -70,5 +70,5 @@ export const useAllmessages = () => {
     },
   });
 
-  return { data, mutate, isSuccess, isPending, a };
+  return { data, mutate, isSuccess, isPending, Newdata };
 };

@@ -1,22 +1,82 @@
 import { useAllmessages } from "../../hooks/SendAndGetMessage";
 import { useUserStore } from "../../store/zustand/userstore";
 import { useState } from "react";
+import { formatTimestampToTime } from "../../assets/time";
 import { useEffect, useRef } from "react";
 import MessageInput from "./MessageInput";
-export default function MainType() {
-  const { data, a, mutate, isPending } = useAllmessages();
-  const [alldata, setalldata] = useState<any>([]);
+import { io } from "socket.io-client";
 
-  const { user } = useUserStore();
+export default function MainType() {
+  const { data, Newdata, mutate } = useAllmessages();
+  const [alldata, setalldata] = useState<any>([]);
+  const [socketConnected, setsocketConnected] = useState<boolean>(false);
+  const { user, selectedChat } = useUserStore();
+  const socket = useRef<any>(null);
+
   useEffect(() => {
-    if (data && data.Messages) {
+    socket.current = io("http://localhost:5000");
+
+    socket.current.on("connect", () => {
+      console.log("connected react");
+      socket.current.emit("setup", user);
+    });
+
+    socket.current.on("connected", () => {
+      setsocketConnected(true);
+    });
+    socket?.current.on("typing", (a: any) => {
+      alert("f");
+    });
+    const handleReceivedMessage = (newdata: any) => {
+      if (newdata.chat === selectedChat?._id) {
+        setalldata((prev: any) => [...prev, newdata]);
+      }
+    };
+
+    socket.current.on("recieved-message", handleReceivedMessage);
+
+    return () => {
+      if (socket.current) {
+        socket.current.disconnect();
+        console.log("disconnected front");
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    if (data) {
+      socket.current.emit("chat-join", data._id);
+    }
+    if (data?.Messages?.length > 0) {
       setalldata(data.Messages);
+    } else if (data?.Messages?.length === 0) {
+      setalldata([]);
     }
   }, [data]);
+  useEffect(() => {
+    if (Newdata) {
+      socket.current.emit("new-message", {
+        participants: selectedChat.participants,
+        Newdata,
+      });
+
+      setalldata((prev: any) => [...prev, Newdata]);
+    }
+  }, [Newdata]);
 
   useEffect(() => {
-    setalldata((prev: any) => [...prev, a]);
-  }, [a, setalldata]);
+    /*const handleReceivedMessage = (newdata: any) => {
+      if (newdata.chat === selectedChat?._id) {
+        setalldata((prev: any) => [...prev, newdata]);
+      }
+    };
+
+    socket.current.on("recieved-message", handleReceivedMessage);
+
+    return () => {
+      socket.current.off("recieved-message", handleReceivedMessage);
+    };*/
+  });
 
   const ref = useRef<any>(null);
 
@@ -27,31 +87,34 @@ export default function MainType() {
   }, [alldata]);
 
   return (
-    <div className="grow flex flex-col justify-between">
-      {!isPending && alldata && alldata?.length === 0 ? (
+    <div className="flex grow flex-col justify-between">
+      {alldata?.length === 0 ? (
         <h1 className="text-xl text-center py-10">
           select user and start sending message
         </h1>
       ) : (
-        <div className="py-4 wid overflow-auto grow max-h-[280px]">
-          {data &&
+        <div className="p-4 overflow-y-scroll h-[50px] grow md:max-h-[280px]">
+          {alldata.length > 0 &&
             alldata.map((chat: any) => (
               <div
                 ref={ref}
                 key={chat._id}
                 className={`chat ${
-                  chat.sender._id === user?._id ? "chat-end" : "chat-start"
+                  chat.sender?._id == user?._id ? "chat-end" : "chat-start"
                 }`}
               >
                 <div className="chat-image avatar">
                   <div className="w-10 rounded-full">
                     <img
                       alt="Tailwind CSS chat bubble component"
-                      src={chat.sender.picture}
+                      src={chat?.sender.picture}
                     />
                   </div>
                 </div>
-                <div className="chat-bubble">{chat.content}</div>
+                <div className="chat-bubble">{chat?.content}</div>
+                <div className="chat-footer opacity-50">
+                  {formatTimestampToTime(chat.updatedAt)}
+                </div>
               </div>
             ))}
         </div>
