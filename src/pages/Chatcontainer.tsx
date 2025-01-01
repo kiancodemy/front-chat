@@ -1,6 +1,6 @@
-import { MyChatMenue } from "../components/chat/ChatMenue";
 import ChatHeader from "../components/chat/ChatHeader";
 import MessageContainer from "../components/chat/MessageContainer";
+import { MyChatMenue } from "../components/chat/Menuechat";
 export default function Chatcontainer() {
   return (
     <div className="py-10 flex gap-y-3 items-center flex-col min-h-screen md:py-20">
