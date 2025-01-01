@@ -1,4 +1,4 @@
-import Chatmenue from "../components/chat/ChatMenue";
+import ChatMenue from "../components/chat/ChatMenue";
 import ChatHeader from "../components/chat/ChatHeader";
 import MessageContainer from "../components/chat/MessageContainer";
 export default function Chatcontainer() {
@@ -9,7 +9,7 @@ export default function Chatcontainer() {
       </div>
 
       <div className="bg-black *:bg-white  justify-center grow flex gap-x-3 max-w-[80%] p-4 rounded-md container mx-auto">
-        <Chatmenue></Chatmenue>
+        <ChatMenue></ChatMenue>
         <MessageContainer />
       </div>
     </div>
