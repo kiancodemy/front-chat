@@ -1,4 +1,4 @@
-import ChatMenue from "../components/chat/ChatMenue";
+import { ChatMenue } from "../components/chat/ChatMenue";
 import ChatHeader from "../components/chat/ChatHeader";
 import MessageContainer from "../components/chat/MessageContainer";
 export default function Chatcontainer() {
