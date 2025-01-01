@@ -3,7 +3,7 @@ import Loading from "../Loading/Loading";
 import ChatItem from "./ChatItem";
 import CreateGroup from "../models/CreateGroup";
 import { useUserStore } from "../../store/zustand/userstore";
-export default function Chatmenue() {
+export default function ChatMenue() {
   const { data, isPending } = useAllchats();
   const { selectedChat, setgroupModel } = useUserStore();
 
