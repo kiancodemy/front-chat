@@ -1,9 +1,10 @@
 import { useMutation } from "@tanstack/react-query";
 import { resultAlert } from "../utils/toast";
 import { useUserStore } from "../store/zustand/userstore";
+const apiUrl = import.meta.env.VITE_API_URL;
 export const logoutFunction = async () => {
   try {
-    const response = await fetch("http://localhost:5000/user/logout", {
+    const response = await fetch(`${apiUrl}/user/logout`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-
+const apiUrl = import.meta.env.VITE_API_URL;
 export const Allchats = async () => {
   try {
-    const response = await fetch(`http://localhost:5000/chats/fetchChat`, {
+    const response = await fetch(`${apiUrl}/chats/fetchChat`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

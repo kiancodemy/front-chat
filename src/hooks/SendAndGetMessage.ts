@@ -3,19 +3,18 @@ import { useState } from "react";
 
 import { useMutation } from "@tanstack/react-query";
 import { useUserStore } from "../store/zustand/userstore";
+const apiUrl = import.meta.env.VITE_API_URL;
+
 export const Allmessages = async (search: string) => {
   try {
-    const response = await fetch(
-      `http://localhost:5000/message/getmessages/${search}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
+    const response = await fetch(`${apiUrl}/message/getmessages/${search}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
 
-        credentials: "include",
-      }
-    );
+      credentials: "include",
+    });
 
     if (response.ok) {
       return await response.json();
@@ -32,7 +31,7 @@ export const sendmessages = async (data: {
   chatid: string;
 }) => {
   try {
-    const response = await fetch(`http://localhost:5000/message/sendmessage`, {
+    const response = await fetch(`${apiUrl}/message/sendmessage`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

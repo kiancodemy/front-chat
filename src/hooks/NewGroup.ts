@@ -2,9 +2,10 @@ import { useMutation } from "@tanstack/react-query";
 import { resultAlert } from "../utils/toast";
 
 import { useQueryClient } from "@tanstack/react-query";
+const apiUrl = import.meta.env.VITE_API_URL;
 export const NewGroup = async (data: { name: string; users: [] }) => {
   try {
-    const response = await fetch("http://localhost:5000/chats/createGroup", {
+    const response = await fetch(`${apiUrl}/chats/createGroup`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -1,10 +1,11 @@
 import { useMutation } from "@tanstack/react-query";
 import { resultAlert } from "../utils/toast";
 import { singupType } from "../types/type";
+const apiUrl = import.meta.env.VITE_API_URL;
 
 const signupfunction = async (data: singupType) => {
   try {
-    const response = await fetch("http://localhost:5000/user/signup", {
+    const response = await fetch(`${apiUrl}/user/signup`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -1,10 +1,11 @@
 import { useMutation } from "@tanstack/react-query";
 import { resultAlert } from "../utils/toast";
-import { useUserStore } from "../store/zustand/userstore";
+
 import { useQueryClient } from "@tanstack/react-query";
+const apiUrl = import.meta.env.VITE_API_URL;
 export const choosechat = async (data: { userid: string }) => {
   try {
-    const response = await fetch("http://localhost:5000/chats/chatacess", {
+    const response = await fetch(`${apiUrl}/chats/chatacess`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

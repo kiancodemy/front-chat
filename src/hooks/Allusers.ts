@@ -1,18 +1,15 @@
 import { useQuery } from "@tanstack/react-query";
-
+const apiUrl = import.meta.env.VITE_API_URL;
 export const AllUsers = async (search: string) => {
   try {
-    const response = await fetch(
-      `http://localhost:5000/user/Allusers?search=${search}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
+    const response = await fetch(`${apiUrl}/user/Allusers?search=${search}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
 
-        credentials: "include",
-      }
-    );
+      credentials: "include",
+    });
 
     if (response.ok) {
       return await response.json();

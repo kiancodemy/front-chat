@@ -9,12 +9,14 @@ import { io } from "socket.io-client";
 export default function MainType() {
   const { data, Newdata, mutate } = useAllmessages();
   const [alldata, setalldata] = useState<any>([]);
-  const [socketConnected, setsocketConnected] = useState<boolean>(false);
-  const { user, selectedChat } = useUserStore();
+  const [_, setsocketConnected] = useState<boolean>(false);
+  const { user, selectedChat, setnitification, notificationList } =
+    useUserStore();
   const socket = useRef<any>(null);
+  const apiUrl = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
-    socket.current = io("http://localhost:5000");
+    socket.current = io(`${apiUrl}`);
 
     socket.current.on("connect", () => {
       console.log("connected react");
@@ -24,16 +26,6 @@ export default function MainType() {
     socket.current.on("connected", () => {
       setsocketConnected(true);
     });
-    socket?.current.on("typing", (a: any) => {
-      alert("f");
-    });
-    const handleReceivedMessage = (newdata: any) => {
-      if (newdata.chat === selectedChat?._id) {
-        setalldata((prev: any) => [...prev, newdata]);
-      }
-    };
-
-    socket.current.on("recieved-message", handleReceivedMessage);
 
     return () => {
       if (socket.current) {
@@ -44,6 +36,7 @@ export default function MainType() {
   }, []);
 
   useEffect(() => {
+    console.log(data);
     if (data) {
       socket.current.emit("chat-join", data._id);
     }
@@ -65,9 +58,11 @@ export default function MainType() {
   }, [Newdata]);
 
   useEffect(() => {
-    /*const handleReceivedMessage = (newdata: any) => {
+    const handleReceivedMessage = (newdata: any) => {
       if (newdata.chat === selectedChat?._id) {
         setalldata((prev: any) => [...prev, newdata]);
+      } else {
+        setnitification([...notificationList, newdata]);
       }
     };
 
@@ -75,7 +70,7 @@ export default function MainType() {
 
     return () => {
       socket.current.off("recieved-message", handleReceivedMessage);
-    };*/
+    };
   });
 
   const ref = useRef<any>(null);

@@ -1,6 +1,6 @@
 import { useUserStore } from "../../../store/zustand/userstore";
 import { useState } from "react";
-import Notification from "../../notification/notification";
+import Notification from "../../notification/Notification";
 import { uselogout } from "../../../hooks/logout";
 import UserData from "../../models/UserData";
 export default function UserButton() {
