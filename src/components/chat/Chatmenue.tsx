@@ -3,7 +3,7 @@ import Loading from "../Loading/Loading";
 import ChatItem from "./ChatItem";
 import CreateGroup from "../models/CreateGroup";
 import { useUserStore } from "../../store/zustand/userstore";
-export const ChatMenue = () => {
+export const MyChatMenue = () => {
   const { data, isPending } = useAllchats();
   const { selectedChat, setgroupModel } = useUserStore();
 
@@ -13,6 +13,7 @@ export const ChatMenue = () => {
         selectedChat ? "hidden md:block" : "basis-full"
       }  rounded-md bg-white md:basis-1/4`}
     >
+      +
       {isPending ? (
         <Loading></Loading>
       ) : (
@@ -21,7 +22,7 @@ export const ChatMenue = () => {
             <h1 className="capitalize font-semibold">my chats</h1>
             <button
               onClick={() => setgroupModel()}
-              className="capitalize py-1 md:py-2 px-2 md:px-4 rounded-md duration-500 hover:bg-red-700 bg-red-500 text-white"
+              className="capitalize  py-1 md:py-2 px-2 rounded-md duration-500 hover:bg-red-700 bg-red-500 text-white"
             >
               group chat+
             </button>
