@@ -36,7 +36,6 @@ export default function MainType() {
   }, []);
 
   useEffect(() => {
-    console.log(data);
     if (data) {
       socket.current.emit("chat-join", data._id);
     }
